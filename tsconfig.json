@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "outDir": "dist"
+  },
+  "include": ["*.ts", "**/*.ts", "**/*.d.ts"],
+  "ts-node": {
+    "esm": true
+  }
+}
+
+
