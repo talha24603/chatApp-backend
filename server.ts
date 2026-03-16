@@ -144,7 +144,7 @@ io.on("connection", (socket: AuthenticatedSocket) => {
   }
 
   socket.on("join_room", (roomId) => {
-    console.log(`🔌 Socket ${socket.id} joining room: ${roomId}`);
+  //  console.log(`🔌 Socket ${socket.id} joining room: ${roomId}`);
     socket.join(roomId);
     console.log(`✅ Socket ${socket.id} joined room: ${roomId}`);
   });
