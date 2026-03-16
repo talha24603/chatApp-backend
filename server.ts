@@ -150,7 +150,7 @@ io.on("connection", (socket: AuthenticatedSocket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(`❌ User disconnected: ${socket.id} (userId: ${userId})`);
+   // console.log(`❌ User disconnected: ${socket.id} (userId: ${userId})`);
     
     // Remove socket from user's socket set
     const userSockets = onlineUsers.get(userId);
