@@ -1,0 +1,49 @@
+# Run on VPS: API + Redis on the same host (Redis is NOT exposed to the internet).
+# Requires .env on the server (copy from .env.example).
+#
+#   docker compose up -d --build
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    # No ports: — only reachable by the app container on chat-network
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+      --appendonly yes
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - chat-network
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${PORT:-5000}:5000"
+    env_file:
+      - .env
+    environment:
+      PORT: 5000
+      # Redis on this VPS (Docker service name "redis", not localhost)
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - chat-network
+
+volumes:
+  redis_data:
+
+networks:
+  chat-network:
+    driver: bridge

@@ -2,7 +2,7 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: [ main ] # Change to main if that's your branch name
+    branches: [main]
 
 jobs:
   deploy:
@@ -22,6 +22,5 @@ jobs:
           script: |
             cd ~/chatApp-backend
             git pull origin main
-            npm install
-            # If using PM2 to keep it running
-            pm2 restart chat-backend || pm2 start "tsx server.ts" --name chat-backend
+            docker compose up -d --build
+            docker compose ps
